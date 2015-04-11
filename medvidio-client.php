@@ -21,6 +21,7 @@ function medvidio_client_admin()
 	<table class="widefat">
 	<thead>
 	<tr>
+	<th> WP Id </th>
 	<th> Video Id </th>
 	<th> Application </th>
 	<th> Public Key </th>
@@ -29,7 +30,8 @@ function medvidio_client_admin()
 	</thead>
 	<tfoot>
 	<tr>
-	<th> Id </th>
+	<th> WP Id </th>
+	<th> Video Id </th>
 	<th> Application </th>
 	<th> Public Key </th>
 	<th> Secret Key </th>
@@ -41,7 +43,7 @@ function medvidio_client_admin()
 
 	$medvidio_videos = $wpdb->get_results(
 		"
-		SELECT mv_video_id, mv_application, mv_public_key, mv_secret_key
+		SELECT id, mv_video_id, mv_application, mv_public_key, mv_secret_key
 		from wp_medvidio_videos
 		"
 	);
@@ -51,6 +53,7 @@ function medvidio_client_admin()
 ?>
 		<tr>
 <?php
+		echo "<td>".$video->id."</td>";
 		echo "<td>".$video->mv_video_id."</td>";
 		echo "<td>".$video->mv_application."</td>";
 		echo "<td>".$video->mv_public_key."</td>";
