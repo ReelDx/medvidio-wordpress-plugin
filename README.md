@@ -14,7 +14,7 @@ This creates the ```wp_medvidio_videos``` database table for storing the data ne
 
 ##Configuration
 
-Create a new record in wp_options with ```option_name = "medvidio_jwplayer_license_key"``` and ```option_value``` equal to the licence key for your JWPlayer.
+Create a new record in wp_options with ```option_name = "medvidio_jwplayer_license_key"``` and ```option_value``` equal to the license key for your JWPlayer.
 
 NB: you must have the 'Enterprise' version of JWPlayer in order to stream videos from medvid.io.
 
