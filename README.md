@@ -10,7 +10,7 @@ Clone this repository into your Wordpress plugin directory so you have:
 ```
 
 Go to the Wordpress Dashboard and activate the plugin.
-This creates the ```wp_medvidio_videos``` database table for storing the data needed to retrieve the videos that you are going to refer to in your Worpress content.
+This creates the ```wp_medvidio_videos``` database table for storing the data needed to retrieve the videos to which you are going to refer in your Worpress content.
 
 ##Configuration
 
