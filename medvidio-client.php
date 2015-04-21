@@ -4,7 +4,7 @@ Plugin Name: MedVid.io client
 Plugin URI: http://github.com/ReelDx/wordpress-client
 Description: Retrieves videos from MedVid.io 
 Author: Greg Zuro <greg@zuro.net>
-Version: 1.0
+Version: 1.3
 Author URI: http://github.com/gregzuro
 */
 
@@ -12,6 +12,13 @@ require 'vendor/autoload.php';
 
 
 function medvidio_client_get( $atts ) {
+	global $medvidio_jwplayer_license_key;
+	$jw_key = get_option( "medvidio_jwplayer_license_key");
+	if ($jw_key == "") {
+		return "[ MedVid.io: No JWPlayer License Key in properties (medvidio_jwplayer_license_key) ]";
+	}
+
+
 	$a = shortcode_atts( array('id' => 0,), $atts);
 	$id = $a['id'] ;
 	if ($id == 0) {
@@ -22,7 +29,7 @@ function medvidio_client_get( $atts ) {
 	$table_name = $wpdb->prefix . 'medvidio_videos';
 	$video = $wpdb->get_results(
 		"
-		SELECT mv_video_id, description, mv_application, mv_public_key, mv_secret_key 
+		SELECT mv_video_id, description, mv_application, mv_public_key, mv_secret_key, height, width
 		FROM $table_name
 		WHERE id = $id
 		"
@@ -33,7 +40,7 @@ function medvidio_client_get( $atts ) {
 	$payload = array(
 		"aud" => $video[0]->mv_public_key,
 		"iat" => time(),
-		"exp" => time()+20000,
+		"exp" => time()+999,
 		"sub" => $video[0]->mv_application
 		);
 	$token = JWT::encode($payload, $video[0]->mv_secret_key, 'HS256');
@@ -51,21 +58,39 @@ function medvidio_client_get( $atts ) {
     	'Authorization: Bearer ' . $token
     	));
 
-
     $curl_response = curl_exec($curl);
 	$httpcode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
 	curl_close($curl);
 
+	$response = json_decode($curl_response) ;
+	$hls_url = $response->{'hls_url'} ;
+
 	if ($httpcode != "200") {
-		return "[ MedVid.io: error retrieving: " . $httpcode . " ]";
+		return "[ MedVid.io: error retrieving: " . $httpcode . " (mercury token: " . $token . ")]";
 	}
 	else {
-		return "[ MedVid.io: curl result is: " . $curl_response . " ]";
+?>
+		<script type="text/javascript" src="/wp-content/jwplayer/jwplayer.js"></script>
+		<script type="text/javascript">jwplayer.key="<?php echo $jw_key ?>";</script>
+		<script type="text/javascript">jwplayer.defaults = { "androidhls":"true" };</script>
+
+		<p>
+			<div id='player-0'>error!</div>
+			<script type="text/javascript">
+				jwplayer('player-0').setup({"file":"<?php echo $hls_url ?>","height":"<?php echo $video[0]->height ?>","width":"<?php echo $video[0]->width ?>"});
+			</script>
+		</p>
+<?php
+		return $video[0]->description;
 	}
 
-
 }
-add_shortcode( 'medvidio', 'medvidio_client_get');
+
+add_action('init','register_shortcode');
+
+function register_shortcode() {
+	add_shortcode( 'medvidio', 'medvidio_client_get');
+}
 
 add_action('admin_menu', 'medvidio_client_admin_actions');
 function medvidio_client_admin_actions() {
@@ -85,6 +110,8 @@ function medvidio_client_admin()
 	<th> User Id </th>
 	<th> Public Key </th>
 	<th> Secret Key </th>
+	<th> Height </th>
+	<th> Width </th>
 	</tr>
 	</thead>
 	<tfoot>
@@ -94,6 +121,8 @@ function medvidio_client_admin()
 	<th> User Id </th>
 	<th> Public Key </th>
 	<th> Secret Key </th>
+	<th> Height </th>
+	<th> Width </th>
 	</tr>
 	</tfoot>
 	<tbody>
@@ -132,7 +161,7 @@ function medvidio_client_admin()
 register_activation_hook( __FILE__, 'medvidio_client_db_install');
 //register_activation_hook( __FILE__, 'db_install_data');
 global $medvidio_client_db_version;
-$medvidio_client_db_version = '1.2';
+$medvidio_client_db_version = '1.3';
 
 function medvidio_client_db_install() {
 	global $wpdb;
@@ -152,6 +181,8 @@ function medvidio_client_db_install() {
 			mv_application tinytext NOT NULL,
 			mv_public_key tinytext NOT NULL,
 			mv_secret_key tinytext NOT NULL,
+			height int NOT NULL,
+			width int NOT NULL,
 			UNIQUE KEY id (id)
 			) $charset_collate;";
 
