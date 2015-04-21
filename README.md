@@ -43,4 +43,7 @@ The video will be inserted with the optional description following.
 ##Improvements
 
 - Create the *medvidio_jwplayer_license_key* option automatically on plugin installation
+- have license key entry on admin / config screen
+- additional player parameters in admin screen
+- allow editing and adding records to the ```wp_medvidio_videos``` database table on the admin screen
  
