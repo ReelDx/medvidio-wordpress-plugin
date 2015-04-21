@@ -10,11 +10,11 @@ Clone this repository into your Wordpress plugin directory so you have:
 ```
 
 Go to the Wordpress Dashboard and activate the plugin.
-This creates the ```wp_medvidio_videos``` database table for storing the data needed to retrieve the videos that you are going to refer to in your Worpress content.
+This creates the ```wp_medvidio_videos``` database table for storing the data needed to retrieve the videos to which you are going to refer in your Worpress content.
 
-##Confuguration
+##Configuration
 
-Create a new record in wp_options with ```option_name = "medvidio_jwplayer_license_key"``` and ```option_value``` equal to the licence key for your JWPlayer.
+Create a new record in wp_options with ```option_name = "medvidio_jwplayer_license_key"``` and ```option_value``` equal to the license key for your JWPlayer.
 
 NB: you must have the 'Enterprise' version of JWPlayer in order to stream videos from medvid.io.
 
@@ -43,4 +43,7 @@ The video will be inserted with the optional description following.
 ##Improvements
 
 - Create the *medvidio_jwplayer_license_key* option automatically on plugin installation
+- have license key entry on admin / config screen
+- additional player parameters in admin screen
+- allow editing and adding records to the ```wp_medvidio_videos``` database table on the admin screen
  
