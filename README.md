@@ -43,4 +43,4 @@ The video will be inserted with the optional description following.
 ##Improvements
 
 - Create the *medvidio_jwplayer_license_key* option automatically on plugin installation
-- 
+ 
