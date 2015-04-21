@@ -65,15 +65,16 @@ function medvidio_client_get( $atts ) {
 		return "[ MedVid.io: error retrieving: " . $httpcode . " (mercury token: " . $token . ")]";
 	}
 	else {
+		$div_id = uniqid("player-", true); // generate a unique name so that we can have >1 video on a page
 		$ret = "
 		<script type=\"text/javascript\" src=\"/wp-content/jwplayer/jwplayer.js\"></script>
 		<script type=\"text/javascript\">jwplayer.key=\"{$jw_key}\";</script> 
 		<script type=\"text/javascript\">jwplayer.defaults = { \"androidhls\":\"true\" };</script> 
 
 		<p>
-			<div id='player-0'>error!</div> 
+			<div id='{$div_id}'>error!</div> 
 			<script type=\"text/javascript\">
-				jwplayer('player-0').setup({\"file\":\"{$hls_url}\",\"height\":\"{$video[0]->height}\",\"width\":\"{$video[0]->width}\"});
+				jwplayer('{$div_id}').setup({\"file\":\"{$hls_url}\",\"height\":\"{$video[0]->height}\",\"width\":\"{$video[0]->width}\"});
 			</script>
 		</p>
 		";
