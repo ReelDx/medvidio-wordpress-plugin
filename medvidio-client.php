@@ -35,8 +35,6 @@ function medvidio_client_get( $atts ) {
 		"
 	);
 
-//	$keys = array('1' => 'my_key', '2' => 'my_key2');
-
 	$payload = array(
 		"aud" => $video[0]->mv_public_key,
 		"iat" => time(),
@@ -44,8 +42,6 @@ function medvidio_client_get( $atts ) {
 		"sub" => $video[0]->mv_application
 		);
 	$token = JWT::encode($payload, $video[0]->mv_secret_key, 'HS256');
-
-//	return "The public key is: " . $video[0]->mv_public_key . " !";
 
 	$service_url = "https://apollo.reeldx.com/api/v1/video/" . $video[0]->mv_video_id;
 	$curl = curl_init($service_url);
@@ -69,19 +65,25 @@ function medvidio_client_get( $atts ) {
 		return "[ MedVid.io: error retrieving: " . $httpcode . " (mercury token: " . $token . ")]";
 	}
 	else {
-?>
-		<script type="text/javascript" src="/wp-content/jwplayer/jwplayer.js"></script>
-		<script type="text/javascript">jwplayer.key="<?php echo $jw_key ?>";</script>
-		<script type="text/javascript">jwplayer.defaults = { "androidhls":"true" };</script>
+		$ret = "
+		<script type=\"text/javascript\" src=\"/wp-content/jwplayer/jwplayer.js\"></script>
+		<script type=\"text/javascript\">jwplayer.key=\"{$jw_key}\";</script> 
+		<script type=\"text/javascript\">jwplayer.defaults = { \"androidhls\":\"true\" };</script> 
 
 		<p>
-			<div id='player-0'>error!</div>
-			<script type="text/javascript">
-				jwplayer('player-0').setup({"file":"<?php echo $hls_url ?>","height":"<?php echo $video[0]->height ?>","width":"<?php echo $video[0]->width ?>"});
+			<div id='player-0'>error!</div> 
+			<script type=\"text/javascript\">
+				jwplayer('player-0').setup({\"file\":\"{$hls_url}\",\"height\":\"{$video[0]->height}\",\"width\":\"{$video[0]->width}\"});
 			</script>
 		</p>
-<?php
-		return $video[0]->description;
+		";
+
+		// is there a description?
+		if (strlen($video[0]->description) > 0 ) {  // if so then print it after
+			return $ret . $video[0]->description;
+		} else {  // if not then don't print it.
+			return $ret;
+		}
 	}
 
 }
