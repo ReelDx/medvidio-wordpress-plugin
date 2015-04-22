@@ -113,8 +113,8 @@ function medvidio_client_admin()
 	<th> User Id </th>
 	<th> Public Key </th>
 	<th> Secret Key </th>
-	<th> Height </th>
 	<th> Width </th>
+	<th> Height </th>
 	</tr>
 	</thead>
 	<tfoot>
@@ -124,8 +124,8 @@ function medvidio_client_admin()
 	<th> User Id </th>
 	<th> Public Key </th>
 	<th> Secret Key </th>
-	<th> Height </th>
 	<th> Width </th>
+	<th> Height </th>
 	</tr>
 	</tfoot>
 	<tbody>
@@ -135,7 +135,7 @@ function medvidio_client_admin()
 	$table_name = $wpdb->prefix . 'medvidio_videos';
 	$medvidio_videos = $wpdb->get_results(
 		"
-		SELECT id, mv_video_id, mv_application, mv_public_key, mv_secret_key
+		SELECT id, mv_video_id, mv_application, mv_public_key, mv_secret_key, width, height
 		FROM $table_name
 		"
 	);
@@ -150,6 +150,8 @@ function medvidio_client_admin()
 		echo "<td>".$video->mv_application."</td>";
 		echo "<td>".$video->mv_public_key."</td>";
 		echo "<td>".$video->mv_secret_key."</td>";
+		echo "<td>".$video->width."</td>";
+		echo "<td>".$video->height."</td>";
 ?>
 		</tr>
 <?php
