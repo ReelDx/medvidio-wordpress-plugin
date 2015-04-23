@@ -9,6 +9,13 @@ Clone this repository into your Wordpress plugin directory so you have:
 .../wp-content/plugins/medvidio-wordpress-plugin
 ```
 
+By doing:
+
+```
+$ cd .../wp-content/plugins
+$ git clone https://github.com/ReelDx/medvidio-wordpress-plugin.git
+```
+
 Go to the Wordpress Dashboard and activate the plugin.
 This creates the ```wp_medvidio_videos``` database table for storing the data needed to retrieve the videos to which you are going to refer in your Worpress content.
 
@@ -47,3 +54,75 @@ The video will be inserted with the optional description following.
 - additional player parameters in admin screen
 - allow editing and adding records to the ```wp_medvidio_videos``` database table on the admin screen
  
+## Testing
+
+Download the Wordpress VM from Bitnami: https://bitnami.com/stack/wordpress/virtual-machine#virtualbox .
+Unzip the VM that you downloaded.
+In VirtualBox, do *File->Import* and specify the .ovf file in the un-zipped VM 
+
+Once the VM has started it will tell you the IP address that it has been assigned.
+You can go to a browser in your *host* and enter that IP in order to see the Wordpress application.
+If you go to ```<thatIP>/wp-admin``` , then you can give user/bitnami in order to login in to Wordpress and see the Dashboard.
+
+Go to the VM console and do:
+
+```
+$ sudo apt-get update
+$ sudo apt-get -y install git
+```
+
+Now that you have git installed, you can:
+
+```
+$ cd /opt/bitnami/apps/wordpress/htdocs/wp-content/plugins
+$ git clone https://github.com/ReelDx/medvidio-wordpress-plugin.git
+```
+
+Now go back to the Wordpress Dashboard and click on *Plugins* on the left side.
+Find *MedVid.io client* and click *Activate* .
+On the left, click *Settings->MedVidioClient* .
+See that there are no entries in the *Registered ... content* table.
+
+In the VM start the mysql cli:
+
+```
+$ mysql -u root -p
+```
+
+Now you need to add two records to the database:
+
+```
+mysql> insert into bitnami_wordpress.wp_options (option_name, option_value) values ('medvidio_jwplayer_license_key', '<key>');
+Query OK, 1 row affected (0.00 sec)
+mysql> insert into bitnami_wordpress.wp_medvidio_videos ('description', 'mv_video_id', 'mv_application', 'mv_public_key', 'mv_secret_key', 'height', 'width') values ('<desc>', '<video_id>', '<application>', '<public_key>', '<secret_key>', '<height>', '<width>');
+Query OK, 1 row affected (0.00 sec)
+```
+
+where you replace all the values ('<...>') with appropriate ones for a video that you have added to (prod) Apollo.
+
+Go back to the Wordpress Dashboard and the settings for the MedVidio plugin (on the left, click *Settings->MedVidioClient*)where you should now see the record that you just added.
+Note the value under *WP Id*. 
+That is the id value that you need to use in the shortcode as described below.
+
+Now you are ready to add a worpress post with a shortcode specifying this video. 
+In the Wordpress Dashboard, click *Posts->Add New* .
+Enter a title, then some text in the main entry box below.
+Include a shortcode referencing your video like:
+
+```
+Here's some text.
+
+[medvidio id=xx]
+
+Some additional text.
+```
+
+where xx is the *Wp Id' that you noted earlier.
+
+Now click the *Preview* button toward the upper right and you should see the post with the included video on a new browser page.
+
+
+
+
+
+
