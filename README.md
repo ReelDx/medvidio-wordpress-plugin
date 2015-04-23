@@ -100,7 +100,7 @@ Query OK, 1 row affected (0.00 sec)
 
 where you replace all the values ('<...>') with appropriate ones for a video that you have added to (prod) Apollo.
 
-Go back to the Wordpress Dashboard and the settings for the MedVidio plugin (on the left, click *Settings->MedVidioClient*)where you should now see the record that you just added.
+Go back to the Wordpress Dashboard and the settings for the MedVidio plugin (on the left, click *Settings->MedVidioClient*) where you should now see the record that you just added.
 Note the value under *WP Id*. 
 That is the id value that you need to use in the shortcode as described below.
 
