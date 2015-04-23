@@ -78,6 +78,16 @@ $ cd /opt/bitnami/apps/wordpress/htdocs/wp-content/plugins
 $ git clone https://github.com/ReelDx/medvidio-wordpress-plugin.git
 ```
 
+You now need to install the JW Player.
+In the VM:
+
+```
+$ cd /opt/bitnami/apps/wordpress/htdocs/wp-content
+$ wget https://account.jwplayer.com/static/download/jwplayer-6.12.zip
+$ unzip jwplayer-6.12.zip
+$ rm jwplayer-6.12.zip
+```
+
 Now go back to the Wordpress Dashboard and click on *Plugins* on the left side.
 Find *MedVid.io client* and click *Activate* .
 On the left, click *Settings->MedVidioClient* .
@@ -89,12 +99,14 @@ In the VM start the mysql cli:
 $ mysql -u root -p
 ```
 
+Note that the password should be *bitnami*.
+
 Now you need to add two records to the database:
 
 ```
 mysql> insert into bitnami_wordpress.wp_options (option_name, option_value) values ('medvidio_jwplayer_license_key', '<key>');
 Query OK, 1 row affected (0.00 sec)
-mysql> insert into bitnami_wordpress.wp_medvidio_videos ('description', 'mv_video_id', 'mv_application', 'mv_public_key', 'mv_secret_key', 'height', 'width') values ('<desc>', '<video_id>', '<application>', '<public_key>', '<secret_key>', '<height>', '<width>');
+mysql> insert into bitnami_wordpress.wp_medvidio_videos (description, mv_video_id, mv_application, mv_public_key, mv_secret_key, height, width) values ('<desc>', '<video_id>', '<application>', '<public_key>', '<secret_key>', '<height>', '<width>');
 Query OK, 1 row affected (0.00 sec)
 ```
 
