@@ -129,7 +129,7 @@ Here's some text.
 Some additional text.
 ```
 
-where xx is the *Wp Id' that you noted earlier.
+where xx is the *Wp Id* that you noted earlier.
 
 Now click the *Preview* button toward the upper right and you should see the post with the included video on a new browser page.
 
