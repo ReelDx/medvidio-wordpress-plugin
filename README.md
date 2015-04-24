@@ -17,7 +17,7 @@ $ git clone https://github.com/ReelDx/medvidio-wordpress-plugin.git
 ```
 
 Go to the Wordpress Dashboard and activate the plugin.
-This creates the ```wp_medvidio_videos``` database table for storing the data needed to retrieve the videos to which you are going to refer in your Worpress content.
+This creates the ```wp_medvidio_videos``` database table for storing the data needed to retrieve the videos to which you are going to refer in your Wordpress content.
 
 ##Configuration
 
@@ -37,7 +37,7 @@ These are available from your medvidio account dashboard at https://mercury.reel
 You must also specify the width and height of the player during playback.
 
 You can optionally specify a Description for the video.
-This description will be inserted immediately after the player in the Worpress document.
+This description will be inserted immediately after the player in the Wordpress document.
 
 To insert the video into a Wordpress document, use a Wordpress 'shortcode' in your post like:
 
@@ -133,7 +133,7 @@ Go back to the Wordpress Dashboard and the settings for the MedVidio plugin (on 
 Note the value under *WP Id*. 
 That is the id value that you need to use in the shortcode as described below.
 
-Now you are ready to add a worpress post with a shortcode specifying this video. 
+Now you are ready to add a Wordpress post with a shortcode specifying this video. 
 In the Wordpress Dashboard, click *Posts->Add New* .
 Enter a title, then some text in the main entry box below.
 Include a shortcode referencing your video like:
