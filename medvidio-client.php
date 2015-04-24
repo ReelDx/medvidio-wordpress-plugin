@@ -42,7 +42,7 @@ function medvidio_client_get( $atts ) {
 	}
 
 
-	$a = shortcode_atts( array('id' => 0,), $atts);
+	$a = shortcode_atts( array('id' => 0, 'height' => 270, 'width' => 480,), $atts);
 	$id = $a['id'] ;
 	if ($id == 0) {
 		return "[ MedVid.io: No Id specified ]";
@@ -97,7 +97,7 @@ function medvidio_client_get( $atts ) {
 		<p>
 			<div id='{$div_id}'>error!</div> 
 			<script type=\"text/javascript\">
-				jwplayer('{$div_id}').setup({\"file\":\"{$hls_url}\",\"height\":\"{$video[0]->height}\",\"width\":\"{$video[0]->width}\"});
+				jwplayer('{$div_id}').setup({\"file\":\"{$hls_url}\",\"height\":\"{$a['height']}\",\"width\":\"{$a['width']}\"});
 			</script>
 		</p>
 		";
@@ -136,8 +136,6 @@ function medvidio_client_admin()
 	<th> User Id </th>
 	<th> Public Key </th>
 	<th> Secret Key </th>
-	<th> Width </th>
-	<th> Height </th>
 	</tr>
 	</thead>
 	<tfoot>
@@ -147,8 +145,6 @@ function medvidio_client_admin()
 	<th> User Id </th>
 	<th> Public Key </th>
 	<th> Secret Key </th>
-	<th> Width </th>
-	<th> Height </th>
 	</tr>
 	</tfoot>
 	<tbody>
@@ -158,7 +154,7 @@ function medvidio_client_admin()
 	$table_name = $wpdb->prefix . 'medvidio_videos';
 	$medvidio_videos = $wpdb->get_results(
 		"
-		SELECT id, mv_video_id, mv_application, mv_public_key, mv_secret_key, width, height
+		SELECT id, mv_video_id, mv_application, mv_public_key, mv_secret_key
 		FROM $table_name
 		"
 	);
@@ -173,8 +169,6 @@ function medvidio_client_admin()
 		echo "<td>".$video->mv_application."</td>";
 		echo "<td>".$video->mv_public_key."</td>";
 		echo "<td>".$video->mv_secret_key."</td>";
-		echo "<td>".$video->width."</td>";
-		echo "<td>".$video->height."</td>";
 ?>
 		</tr>
 <?php
@@ -189,7 +183,7 @@ function medvidio_client_admin()
 register_activation_hook( __FILE__, 'medvidio_client_db_install');
 //register_activation_hook( __FILE__, 'db_install_data');
 global $medvidio_client_db_version;
-$medvidio_client_db_version = '1.3';
+$medvidio_client_db_version = '1.4';
 
 function medvidio_client_db_install() {
 	global $wpdb;
@@ -209,8 +203,6 @@ function medvidio_client_db_install() {
 			mv_application tinytext NOT NULL,
 			mv_public_key tinytext NOT NULL,
 			mv_secret_key tinytext NOT NULL,
-			height int NOT NULL,
-			width int NOT NULL,
 			UNIQUE KEY id (id)
 			) $charset_collate;";
 
