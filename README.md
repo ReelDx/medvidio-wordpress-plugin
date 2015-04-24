@@ -64,6 +64,23 @@ Once the VM has started it will tell you the IP address that it has been assigne
 You can go to a browser in your *host* and enter that IP in order to see the Wordpress application.
 If you go to ```<thatIP>/wp-admin``` , then you can give user/bitnami in order to login in to Wordpress and see the Dashboard.
 
+First, we need to enable sshd so that we can more easily paste commands into the VM.
+Log in to the VM in the VirtualBox window using bitnami/bitnami (unless you have already changed the password, of course).
+Then do:
+
+```
+$ sudo mv /etc/init/ssh.conf.back /etc/init/ssh.conf
+$ sudo start ssh
+```
+
+Now you can ssh in to the VM from the host machine with:
+
+```
+$ ssh bitnami@<thatIP>
+```
+
+and you should be able to paste the commands into the ssh session using your host's normal copy and paste features.
+
 Go to the VM console and do:
 
 ```
