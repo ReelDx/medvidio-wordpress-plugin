@@ -52,7 +52,7 @@ function medvidio_client_get( $atts ) {
 	$table_name = $wpdb->prefix . 'medvidio_videos';
 	$video = $wpdb->get_results(
 		"
-		SELECT mv_video_id, description, mv_application, mv_public_key, mv_secret_key, height, width
+		SELECT mv_video_id, description, mv_application, mv_public_key, mv_secret_key
 		FROM $table_name
 		WHERE id = $id
 		"
@@ -123,11 +123,46 @@ function medvidio_client_admin_actions() {
 	add_options_page('MedVidioClient', 'MedVidioClient', 'manage_options', __FILE__, 'medvidio_client_admin');
 }
 
+
+if (function_exists('add_db_table_editor')) {
+	add_db_table_editor(array( 'table'=>'wp_medvidio_videos'));
+}
+
+
+add_action( 'db_table_editor_init', 'medvidio_load_tables' );
+
+function medvidio_load_tables() 
+{
+
+	global $wpdb;
+	$table_name = $wpdb->prefix . 'medvidio_videos';
+
+
+	$base = Array(
+	    'table'=>'wp_medvidio_videos',
+	    );
+	  add_db_table_editor(array_merge(Array(
+	      'id'=>'id',
+	      'title'=>'Medvidio Videos',
+	      'sql' => 'select * from wp_medvidio_videos'),
+	    $base));
+
+
+//	echo 'title=Medvidio Videos&id_column=id&table=' . $table_name ;
+
+
+}
+
+
 function medvidio_client_admin()
 {
+
+
+
 ?>
 	<div class="wrap">
-	<h4>Registered MedVid.io content:</h4>
+	<h3>Registered MedVid.io content:</h4>
+	<h4>(Use DB Table Editor on left to edit.)</h4>
 	<table class="widefat">
 	<thead>
 	<tr>
@@ -149,8 +184,8 @@ function medvidio_client_admin()
 	</tfoot>
 	<tbody>
 <?php
-	global $wpdb;
 
+	global $wpdb;
 	$table_name = $wpdb->prefix . 'medvidio_videos';
 	$medvidio_videos = $wpdb->get_results(
 		"
@@ -215,6 +250,7 @@ function medvidio_client_db_install() {
 			
 	}
 
+add_action( 'plugins_loaded', 'medvidio_client_db_check');
 function medvidio_client_db_check() {
 
 	global $medvidio_client_db_version;
@@ -222,6 +258,4 @@ function medvidio_client_db_check() {
 		medvidio_client_install();
 	}
 }
-add_action( 'plugins_loaded', 'medvidio_client_db_check()');
-
 ?>

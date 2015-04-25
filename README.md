@@ -95,6 +95,13 @@ $ cd /opt/bitnami/apps/wordpress/htdocs/wp-content/plugins
 $ git clone https://github.com/ReelDx/medvidio-wordpress-plugin.git
 ```
 
+Next, install the DB editor plugin:
+
+```
+$ cd /opt/bitnami/apps/wordpress/htdocs/wp-content/plugins
+$ git clone https://github.com/AccelerationNet/wp-db-table-editor.git
+```
+
 You now need to install the JW Player.
 In the VM:
 
@@ -107,6 +114,7 @@ $ rm jwplayer-6.12.zip
 
 Now go back to the Wordpress Dashboard and click on *Plugins* on the left side.
 Find *MedVid.io client* and click *Activate* .
+Find *DB-table-editor* and click *Activate* .
 On the left, click *Settings->MedVidioClient* .
 See that there are no entries in the *Registered ... content* table.
 
@@ -118,19 +126,19 @@ $ mysql -u root -p
 
 Note that the password should be *bitnami*.
 
-Now you need to add two records to the database:
+Now you need to add one record to the database:
 
 ```
 mysql> insert into bitnami_wordpress.wp_options (option_name, option_value) values ('medvidio_jwplayer_license_key', '<key>');
 Query OK, 1 row affected (0.00 sec)
-mysql> insert into bitnami_wordpress.wp_medvidio_videos (description, mv_video_id, mv_application, mv_public_key, mv_secret_key, height, width) values ('<desc>', '<video_id>', '<application>', '<public_key>', '<secret_key>', '<height>', '<width>');
-Query OK, 1 row affected (0.00 sec)
 ```
 
-where you replace all the values ('<...>') with appropriate ones for a video that you have added to (prod) Apollo.
+where you replace <key> with the JW Player Enterprise key.
 
-Go back to the Wordpress Dashboard and the settings for the MedVidio plugin (on the left, click *Settings->MedVidioClient*) where you should now see the record that you just added.
-Note the value under *WP Id*. 
+Go back to the Wordpress Dashboard and click *DB Table Editor->Medvidio Videos* on the left.
+Click the *New* button and enter then description and (Apollo) id for the video that you want to add, along with the application name and the public and secret keys associated with the application / user that has view rights to that video.
+Once the values are entered, click the *Save 5 Changes* button along the top.
+Note the value in the id column for the record that you just added.
 That is the id value that you need to use in the shortcode as described below.
 
 Now you are ready to add a Wordpress post with a shortcode specifying this video. 
@@ -150,6 +158,15 @@ where xx is the *Wp Id* that you noted earlier.
 
 Now click the *Preview* button toward the upper right and you should see the post with the included video on a new browser page.
 
+You can also include either one or both of *height* and *width*:
+
+```
+[medvidio id=xx height=480] 
+```
+
+```
+[medvidio id=xx height=480 width=720] 
+```
 
 
 
