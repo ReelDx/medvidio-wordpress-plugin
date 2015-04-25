@@ -40,8 +40,6 @@ You need to specify the medvidio video 'Id' which you can get from the medvidio 
 You must specify the private and public keys associated with the medvidio 'application' that created the video.
 These are available from your medvidio account dashboard at https://mercury.reeldx.com/#/applications (click on the little pencil to the right).
 
-You must also specify the width and height of the player during playback.
-
 You can optionally specify a Description for the video.
 This description will be inserted immediately after the player in the Wordpress document.
 
@@ -49,6 +47,12 @@ To insert the video into a Wordpress document, use a Wordpress 'shortcode' in yo
 
 ```
 [medvidio id=53]
+```
+
+You can specify height andor width, as well:
+
+```
+[medvidio id=xx height=480 width=720] 
 ```
 
 The video will be inserted with the optional description following.
