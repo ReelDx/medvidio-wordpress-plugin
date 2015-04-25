@@ -16,6 +16,12 @@ $ cd .../wp-content/plugins
 $ git clone https://github.com/ReelDx/medvidio-wordpress-plugin.git
 ```
 
+Install wp-db-table-editor to more easily add records to the video database table (optional):
+```
+$ cd .../wp-content/plugins
+$ git clone https://github.com/AccelerationNet/wp-db-table-editor.git
+```
+
 Go to the Wordpress Dashboard and activate the plugin.
 This creates the ```wp_medvidio_videos``` database table for storing the data needed to retrieve the videos to which you are going to refer in your Wordpress content.
 
