@@ -124,11 +124,6 @@ function medvidio_client_admin_actions() {
 }
 
 
-if (function_exists('add_db_table_editor')) {
-	add_db_table_editor(array( 'table'=>'wp_medvidio_videos'));
-}
-
-
 add_action( 'db_table_editor_init', 'medvidio_load_tables' );
 
 function medvidio_load_tables() 
@@ -139,17 +134,13 @@ function medvidio_load_tables()
 
 
 	$base = Array(
-	    'table'=>'wp_medvidio_videos',
+	    'table'=>$table_name,
 	    );
 	  add_db_table_editor(array_merge(Array(
 	      'id'=>'id',
 	      'title'=>'Medvidio Videos',
-	      'sql' => 'select * from wp_medvidio_videos'),
+	      'sql' => 'select * from ' . $table_name),
 	    $base));
-
-
-//	echo 'title=Medvidio Videos&id_column=id&table=' . $table_name ;
-
 
 }
 
@@ -245,17 +236,17 @@ function medvidio_client_db_install() {
 		dbDelta( $sql );
 
 		update_option( 'medvidio_client_db_version', $medvidio_client_db_version) ;
-			
+
 		}
-			
+
 	}
 
 add_action( 'plugins_loaded', 'medvidio_client_db_check');
 function medvidio_client_db_check() {
 
 	global $medvidio_client_db_version;
-	if ( get_site_option( 'medvidio_client_db_version' ) != $medvidio_client_db_version ) {
-		medvidio_client_install();
+	if ( get_site_option( 'medvidio_client_db_version', '0.0' ) != $medvidio_client_db_version ) {
+		medvidio_client_db_install();
 	}
 }
 ?>
