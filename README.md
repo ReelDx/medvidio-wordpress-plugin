@@ -67,7 +67,9 @@ The video will be inserted with the optional description following.
 ## Testing
 
 Download the Wordpress VM from Bitnami: https://bitnami.com/stack/wordpress/virtual-machine#virtualbox .
+Be sure to choose the VirtualBox version of the VM rather than the VMWare version.
 Unzip the VM that you downloaded.
+
 In VirtualBox, do *File->Import* and specify the .ovf file in the un-zipped VM 
 
 Once the VM has started it will tell you the IP address that it has been assigned.
@@ -110,6 +112,8 @@ Next, install the DB editor plugin:
 ```
 $ cd /opt/bitnami/apps/wordpress/htdocs/wp-content/plugins
 $ git clone https://github.com/AccelerationNet/wp-db-table-editor.git
+$ cd wp-db-table-editor/assets
+$ git clone https://github.com/mleibman/SlickGrid.git
 ```
 
 You now need to install the JW Player.
