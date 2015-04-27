@@ -132,18 +132,25 @@ function medvidio_load_tables()
 	global $wpdb;
 	$table_name = $wpdb->prefix . 'medvidio_videos';
 
-
 	$base = Array(
 	    'table'=>$table_name,
+            'delete_cb'=>'medvidio_db_row_delete',
+            'cap'=>'edit_others_posts'
 	    );
 	  add_db_table_editor(array_merge(Array(
-	      'id'=>'id',
+	      'id_column'=>'id',
 	      'title'=>'Medvidio Videos',
 	      'sql' => 'select * from ' . $table_name),
 	    $base));
 
 }
 
+function medvidio_db_row_delete($dbte, $id)
+{
+  global $wpdb;
+  $table_name = $wpdb->prefix . 'medvidio_videos';
+  $wpdb->query("DELETE FROM $table_name WHERE id= $id");
+}
 
 function medvidio_client_admin()
 {
