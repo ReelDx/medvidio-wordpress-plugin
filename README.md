@@ -110,9 +110,7 @@ Next, install the DB editor plugin:
 
 ```
 $ cd /opt/bitnami/apps/wordpress/htdocs/wp-content/plugins
-$ git clone https://github.com/AccelerationNet/wp-db-table-editor.git
-$ cd wp-db-table-editor/assets
-$ git clone https://github.com/mleibman/SlickGrid.git
+$ git clone --recursive https://github.com/AccelerationNet/wp-db-table-editor.git
 ```
 
 You now need to install the JW Player.
