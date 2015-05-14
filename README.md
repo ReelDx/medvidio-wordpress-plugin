@@ -49,10 +49,22 @@ To insert the video into a Wordpress document, use a Wordpress 'shortcode' in yo
 [medvidio id=53]
 ```
 
-You can specify height andor width, as well:
+By default the created player will have the following values:
+- Height: 270
+- Width: 480
+- Aspectratio: ""
+
+You can specify height / width / aspectratio as well:
 
 ```
-[medvidio id=xx height=480 width=720] 
+[medvidio id=xx height=480 width=720 aspectratio=16:9] 
+```
+Note that when specifying an aspectratio value the height value will be ignored even if one is provided.
+
+To explicitly exclude the height or width value you can define them as "" values:
+
+```
+[medvidio id=xx height="" width=100% aspectratio=16:9] 
 ```
 
 The video will be inserted with the optional description following.
@@ -169,7 +181,7 @@ where xx is the *Wp Id* that you noted earlier.
 
 Now click the *Preview* button toward the upper right and you should see the post with the included video on a new browser page.
 
-You can also include either one or both of *height* and *width*:
+You can also include the *height* / *width* / *aspectratio* values:
 
 ```
 [medvidio id=xx height=480] 
@@ -178,7 +190,19 @@ You can also include either one or both of *height* and *width*:
 ```
 [medvidio id=xx height=480 width=720] 
 ```
+```
+[medvidio id=xx height=480 width=720 aspectratio=16:9] 
+```
+Note that by including the *aspectratio* value the *height* value will be ignored
 
+You can also explicitly exclude the *height* or *width* values:
+
+```
+[medvidio id=xx height=""] 
+```
+```
+[medvidio id=xx height="" width=""] 
+```
 
 
 
