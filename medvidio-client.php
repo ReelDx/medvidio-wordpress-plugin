@@ -42,7 +42,7 @@ function medvidio_client_get( $atts ) {
 	}
 
 
-	$a = shortcode_atts( array('id' => 0, 'height' => 270, 'width' => 480,), $atts);
+	$a = shortcode_atts( array('id' => 0, 'height' => 270, 'width' => 480, 'aspectratio' => '',), $atts);
 	$id = $a['id'] ;
 	if ($id == 0) {
 		return "[ MedVid.io: No Id specified ]";
@@ -88,8 +88,33 @@ function medvidio_client_get( $atts ) {
 		return "[ MedVid.io: error retrieving: " . $httpcode . " (mercury token: " . $token . ")]";
 	}
 	else {
+		// Build embed value; exclude fields that have a "" value explicitly set
+		$player_opts = "\"file\":\"{$hls_url}\"";
+		if($a['height'] != "")
+			$player_opts .= ",\"height\":\"{$a['height']}\"";
+		if($a['width'] != "")
+			$player_opts .= ",\"width\":\"{$a['width']}\"";
+		// NOTE: default aspectratio is set to "" as any aspectratio value will override the height value
+		if($a['aspectratio'] != "")
+			$player_opts .= ",\"aspectratio\":\"{$a['aspectratio']}\"";
+
+
 		$div_id = uniqid("player-", true); // generate a unique name so that we can have >1 video on a page
+		$div_id = str_replace(".", "-", $div_id); // replace '.' with '-' as '.' breaks mobile devices
+
 		$ret = "
+		<script type=\"text/javascript\" src=\"/wp-content/jwplayer/jwplayer.js\"></script>
+		<script type=\"text/javascript\">jwplayer.key=\"{$jw_key}\";</script> 
+		<script type=\"text/javascript\">jwplayer.defaults = { \"androidhls\":\"true\", \"primary\":\"flash\"};</script> 
+
+		<p>
+			<div id='{$div_id}'>error!</div> 
+			<script type=\"text/javascript\">
+				jwplayer('{$div_id}').setup({{$player_opts}});
+			</script>
+		</p>
+		";
+		/*$ret = "
 		<script type=\"text/javascript\" src=\"/wp-content/jwplayer/jwplayer.js\"></script>
 		<script type=\"text/javascript\">jwplayer.key=\"{$jw_key}\";</script> 
 		<script type=\"text/javascript\">jwplayer.defaults = { \"androidhls\":\"true\" };</script> 
@@ -97,10 +122,10 @@ function medvidio_client_get( $atts ) {
 		<p>
 			<div id='{$div_id}'>error!</div> 
 			<script type=\"text/javascript\">
-				jwplayer('{$div_id}').setup({\"file\":\"{$hls_url}\",\"height\":\"{$a['height']}\",\"width\":\"{$a['width']}\"});
+				jwplayer('{$div_id}').setup({\"file\":\"{$hls_url}\",\"height\":\"{$a['height']}\",\"width\":\"{$a['width']}\",\"aspectratio\":\"{$a['aspectratio']}\"});
 			</script>
 		</p>
-		";
+		";*/
 
 		// is there a description?
 		if (strlen($video[0]->description) > 0 ) {  // if so then print it after
