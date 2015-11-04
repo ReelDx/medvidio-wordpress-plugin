@@ -4,7 +4,8 @@ Plugin Name: MedVid.io client
 Plugin URI: http://github.com/ReelDx/wordpress-client
 Description: Retrieves videos from MedVid.io 
 Author: Greg Zuro <greg@zuro.net>
-Version: 1.3
+Contributions: Andrew Richards (andrew@reeldx.com)
+Version: 1.4
 Author URI: http://github.com/gregzuro
 License: MIT
 */
@@ -82,14 +83,14 @@ function medvidio_client_get( $atts ) {
 	curl_close($curl);
 
 	$response = json_decode($curl_response) ;
-	$hls_url = $response->{'hls_url'} ;
+	$smil_url = $response->{'smil_url'} ;
 
 	if ($httpcode != "200") {
 		return "[ MedVid.io: error retrieving: " . $httpcode . " (mercury token: " . $token . ")]";
 	}
 	else {
 		// Build embed value; exclude fields that have a "" value explicitly set
-		$player_opts = "\"file\":\"{$hls_url}\"";
+		$player_opts = "\"file\":\"{$smil_url}\"";
 		if($a['height'] != "")
 			$player_opts .= ",\"height\":\"{$a['height']}\"";
 		if($a['width'] != "")
@@ -110,23 +111,12 @@ function medvidio_client_get( $atts ) {
 		<p>
 			<div id='{$div_id}'>error!</div> 
 			<script type=\"text/javascript\">
-				jwplayer('{$div_id}').setup({{$player_opts}});
+				var playerInstance = jwplayer(\"{$div_id}\");
+				playerInstance.setup({{$player_opts}});
 			</script>
 		</p>
 		";
-		/*$ret = "
-		<script type=\"text/javascript\" src=\"/wp-content/jwplayer/jwplayer.js\"></script>
-		<script type=\"text/javascript\">jwplayer.key=\"{$jw_key}\";</script> 
-		<script type=\"text/javascript\">jwplayer.defaults = { \"androidhls\":\"true\" };</script> 
-
-		<p>
-			<div id='{$div_id}'>error!</div> 
-			<script type=\"text/javascript\">
-				jwplayer('{$div_id}').setup({\"file\":\"{$hls_url}\",\"height\":\"{$a['height']}\",\"width\":\"{$a['width']}\",\"aspectratio\":\"{$a['aspectratio']}\"});
-			</script>
-		</p>
-		";*/
-
+		
 		// is there a description?
 		if (strlen($video[0]->description) > 0 ) {  // if so then print it after
 			return $ret . $video[0]->description;
