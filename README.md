@@ -130,9 +130,9 @@ In the VM:
 
 ```
 $ cd /opt/bitnami/apps/wordpress/htdocs/wp-content
-$ wget https://account.jwplayer.com/static/download/jwplayer-6.12.zip
-$ unzip jwplayer-6.12.zip
-$ rm jwplayer-6.12.zip
+$ wget https://account.jwplayer.com/static/download/jwplayer-7.1.0.zip
+$ unzip jwplayer-7.1.0.zip
+$ rm jwplayer-7.1.0.zip
 ```
 
 Now go back to the Wordpress Dashboard and click on *Plugins* on the left side.
